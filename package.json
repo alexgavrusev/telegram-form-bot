@@ -1,0 +1,24 @@
+{
+  "name": "telegram-form-bot",
+  "private": true,
+  "workspaces": [
+    "api",
+    "bot",
+    "db",
+    "error",
+    "schemas",
+    "web"
+  ],
+  "scripts": {
+    "dev": "mkdir -p /tmp/.dev_db_data; mongod --dbpath='/tmp/.dev_db_data' 1>/dev/null & DEBUG=* ts-node bot/scripts/dev.ts & vc dev",
+    "shared:build": "yarn workspace @telegram-form-bot/bot build & yarn workspace @telegram-form-bot/db build & yarn workspace @telegram-form-bot/error build & yarn workspace @telegram-form-bot/schemas build",
+    "deploy:staging": "yarn shared:build; vc",
+    "deploy:production": "yarn shared:build; vc --prod",
+    "lint": "eslint --ext js,ts,tsx api db bot web"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.7"
+  }
+}
